@@ -14,7 +14,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products/index', ['products' => Product::test()]);
+        return view('products/index', ['products' => Product::getAllProducts()]);
+    }
+
+    /**
+     * Showing a form to search .
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($tagname) 
+    {
+        return view('products/search-products', ['results' => Product::getProductsFromTags($tagname)]);
     }
 
     /**

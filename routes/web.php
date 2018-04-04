@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'ProductController@index');
+Route::get('/', 'ProductController@index')->name('AllProducts');
+Route::get('/categories', 'CategoryController@index')->name('AllCategories');
+Route::get('/categories/search/{tagname}', 'ProductController@search');
 
 Auth::routes();
 
