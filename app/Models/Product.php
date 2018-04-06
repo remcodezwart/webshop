@@ -8,33 +8,64 @@ use App\Models\Category;
 
 class Product extends Model
 {
-	/*
-		get all products
-
-		return Illuminate\Support\Collection
-	*/
+	/**
+	  *	get all products
+	  *
+	  *	@return Illuminate\Support\Collection|array
+	  */
 	public static function getAllProducts()
 	{
-		$products = DB::table('products')->get();
+		return self::getTagsByProduct(DB::table('products')->get());
+	}
+	/**
+	  *	get a product by name
+	  * @param string $name
+	  *
+	  *	@return Illuminate\Support\Collection|array
+	  */
+	public static function getProductByName(string $name)
+	{
+		return self::getTagsByProduct(DB::table('products')->where('name', $name)->get());
+	}
+	/**
+	  *	get all products that have a certain tag
+	  *	@param string $category
+	  *	
+	  *	@return Illuminate\Support\Collection|array
+	  */
+	public static function getProductsFromTags(string $category)
+	{
+		$tagId = Category::getCategoryIdByName($category);
+		if (empty($tagId)) return array();
+
+		$products = DB::table('product-categories')->select('product_id')->where('categories_id', $tagId->id)->get();
+
+		if (empty($products)) return array();
+
+		$productIds = [];
+
+		foreach ($products as $product) {
+			if (isset($product->product_id)) $productIds[] = $product->product_id;
+		}
+		
+		return self::getTagsByProduct(DB::table('products')->whereIn('id', $productIds)->get());
+	}
+
+	/**
+	  *	adds the tags to the product objects
+	  *	@param Illuminate\Support\Collection
+	  *	
+	  *	@return Illuminate\Support\Collection|array
+	  */
+
+	private static function getTagsByProduct($products)
+	{
+		if (empty($products) || !is_object($products) && !is_array($products) ) return array();
 
 		foreach($products as $product) {
 			$product->categories = Category::getCategoryById($product->id); 
 		}
 		
 		return $products;
-	}
-	/*
-		get all products that have a certain tag
-
-		return Illuminate\Support\Collection
-	*/
-	public static function getProductsFromTags(string $name)
-	{
-		$tagId = Category::getCategoryIdByName($name);
-		if (is_null($tagId)) return array();
-
-		$productIds = DB::table('product-categories')->select('product_id')->where('categories_id', $tagId->id)->get();
-
-		//TODO:Finish function
 	}
 }

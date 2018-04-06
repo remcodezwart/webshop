@@ -18,13 +18,25 @@ class ProductController extends Controller
     }
 
     /**
-     * Showing a form to search .
-     *
+     * Showing the result when searching products under a categorie
+     * 
+     * @param  string  $categorieName
      * @return \Illuminate\Http\Response
      */
-    public function search($tagname) 
+    public function search($category) 
     {
-        return view('products/search-products', ['results' => Product::getProductsFromTags($tagname)]);
+        return view('products/search-products', ['products' => Product::getProductsFromTags($category), 'categorie' => $category]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function show(string $name)
+    {
+        return view('products/product', ['product' => Product::getProductByName($name)]);
     }
 
     /**
@@ -44,17 +56,6 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
     {
         //
     }

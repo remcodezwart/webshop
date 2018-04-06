@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -45,8 +46,8 @@
                             <li><a href="{{ route('AllProducts') }}">Producten</a></li>
                             <li><a href="{{ route('AllCategories') }}">Categorieën</a></li>
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li><a href="{{ route('login') }}">Inloggen</a></li>
+                            <li><a href="{{ route('register') }}">Registeren</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
@@ -74,9 +75,12 @@
         </nav>
 
         @yield('content')
+        <button type="button" class="pull-right btn btn-default shoppingCartContainer">Shopping cart</button>
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset('js/juqery.js') }}"></script>
+    <script src="{{ asset('js/shoppingCart.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

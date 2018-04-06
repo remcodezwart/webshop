@@ -12,8 +12,9 @@
 */
 
 Route::get('/', 'ProductController@index')->name('AllProducts');
+Route::get('/product/tag/{tagname}', 'ProductController@search')->name('search');
+Route::get('/product/name/{name}', 'ProductController@show')->name('product');
 Route::get('/categories', 'CategoryController@index')->name('AllCategories');
-Route::get('/categories/search/{tagname}', 'ProductController@search');
 
 Auth::routes();
 

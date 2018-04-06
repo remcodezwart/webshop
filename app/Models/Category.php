@@ -20,8 +20,9 @@ class Category extends Model
    }
    /**
      * return all the catogories of a given product id.
+     * @param int id
      *
-     * @return return Illuminate\Support\Collection
+     * @return return Illuminate\Support\Collection|array
      */
 
    public static function getCategoryById(int $id)
@@ -41,6 +42,7 @@ class Category extends Model
 
    /**
      * gets all the categories by name
+     * @param int id
      *
      * @return return Illuminate\Support\Collection
      */
