@@ -23,6 +23,13 @@ class Product extends Model
 	  *
 	  *	@return Illuminate\Support\Collection|array
 	  */
+
+	public static function getProductById($id)
+	{
+		return self::getTagsByProduct(DB::table('products')->where('id', $id)->get());
+	}
+
+
 	public static function getProductByName(string $name)
 	{
 		return self::getTagsByProduct(DB::table('products')->where('name', $name)->get());

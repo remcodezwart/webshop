@@ -1,4 +1,16 @@
-.shoppingCartContainer {
+.affix {
 	position: sticky;
 	bottom: 20px;
+}
+
+.center-element {
+	margin:auto;
+	padding:auto;
+}
+
+.overflow-fix {
+	margin-right:25%;
+    overflow: auto;
+	height: 200px;
+	width: 380px;
 }

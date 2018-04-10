@@ -75,7 +75,36 @@
         </nav>
 
         @yield('content')
-        <button type="button" class="pull-right btn btn-default shoppingCartContainer">Shopping cart</button>
+        <div class="container" data-spy="affix">
+            <div class="dropup">
+              <button class="shoppingCartContainer btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Winkel wagentje
+                <span class="caret"></span>
+              </button>
+              <ul class="overflow-fix dropdown-menu" aria-labelledby="dropdownMenu2">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>product</th>
+                            <th>prijs</th>
+                            <th>aantal</th>
+                            <th>totaal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders">
+                        <!--<tr>
+                            <td>nAusc6RcHv</td>
+                            <td>&#8364;4.00</td>
+                            <td>4</td>
+                            <td>&#8364;16.00</td>
+                        </tr>-->
+                    </tbody>
+                </table>
+                <p class="text-center">Totaalprijs &#8364;<span id="total">0</span></p>
+                <button class="btn btn-primary btn-lg btn-block">afrekenen</button>
+              </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->

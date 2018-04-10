@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -92,5 +93,36 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    /**
+     * get the contents of the shoping cart
+     *
+     * @param  \Illuminate\Http\Request  $reques
+     */
+    public function cartContents()
+    {
+
+        echo json_encode(array('succes'));
+    }
+
+    /**
+     * add items to the shoping cart
+     *
+     * @param  \Illuminate\Http\Request  $reques
+     */
+    public function cartAdd(Request $request)
+    {
+        //Product::getProductById()
+        //$id = $request->input('id');
+        //$amount = $request->input('amount');
+        
+        //$validator = Validator::make($request->all(), [
+        //    'id' => 'required|numeric|unique:products,id',
+        //    'amount' => 'required|numeric',
+        //]);
+
+
+        //echo json_encode(array($validator));
     }
 }
