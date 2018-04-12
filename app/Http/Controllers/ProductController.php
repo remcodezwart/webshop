@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\helpers\ShopingCartHelper;
+
 use Validator;
 
 class ProductController extends Controller
@@ -100,29 +102,20 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $reques
      */
-    public function cartContents()
+    public function getCart()
     {
-
-        echo json_encode(array('succes'));
+        $cart = new ShopingCartHelper();
+        $cart->getCart();
     }
 
     /**
      * add items to the shoping cart
      *
-     * @param  \Illuminate\Http\Request  $reques
+     * @param  \Illuminate\Http\Request  $request
      */
     public function cartAdd(Request $request)
     {
-        //Product::getProductById()
-        //$id = $request->input('id');
-        //$amount = $request->input('amount');
-        
-        //$validator = Validator::make($request->all(), [
-        //    'id' => 'required|numeric|unique:products,id',
-        //    'amount' => 'required|numeric',
-        //]);
-
-
-        //echo json_encode(array($validator));
+        $cart = new ShopingCartHelper();
+        $cart->addToCart($request);
     }
 }

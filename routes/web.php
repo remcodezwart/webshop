@@ -17,7 +17,7 @@ Route::get('/product/name/{name}', 'ProductController@show')->name('product');
 Route::get('/categories', 'CategoryController@index')->name('AllCategories');
 
 Route::post('/api/cart', 'ProductController@cartAdd')->name('cartAdd');
-Route::get('/api/cart', 'ProductController@cartContents')->name('cartGet');
+Route::get('/api/cart', 'ProductController@getCart')->name('cartGet');
 
 Auth::routes();
 

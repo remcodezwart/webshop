@@ -24,14 +24,14 @@ $( document ).ready(function() {
     	shoppingCartOverviewElement.append(generateHtml(name, price, amount));
     	totalPrice.text(currentTotal);
 
-     	//$.ajax({
-		 // url: "/api/cart",
-		 // method: "POST",
-		 // data: {id, amount},
-		 // success: function(data){
-		 //   console.log(data)
-		 // }
-		//});
+     	$.ajax({
+		  url: "/api/cart",
+		  method: "POST",
+		  data: {id, amount},
+		  success: function(data){
+		    console.log(data)
+		  }
+		});
 
     })
 
