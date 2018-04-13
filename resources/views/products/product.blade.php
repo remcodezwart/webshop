@@ -8,12 +8,12 @@
                 <div class="panel-heading">Product overzicht</div>
 				@if (!empty($product))
                     <div class="panel-heading">
-                    		<p>Naam: {{ $product['0']->name }}</p>
-                            <p>Beschrijving: {{ $product['0']->description }}</p>
-                            <p>prijs: {{ $product['0']->price }}</p>
-                            <p>aantal in de vooraad: {{ $product['0']->amount }}</p>
-                        @foreach ($product['0']->categories as $category)
-                            <span class="badge badge-success"><a href="{{ route('search', [$category]) }}">{{ $category }}</a></span>
+                    		<p>Naam: {{ $product->name }}</p>
+                            <p>Beschrijving: {{ $product->description }}</p>
+                            <p>prijs: {{ $product->price }}</p>
+                            <p>aantal in de vooraad: {{ $product->amount }}</p>
+                        @foreach ($product->categories as $category)
+                            <span class="badge badge-success"><a href="{{ route('search', [$category->name]) }}">{{ $category->name }}</a></span>
                         @endforeach
                     </div>
                 @else 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Product as Product;
 use Illuminate\Http\Request;
 use App\helpers\ShopingCartHelper;
 
@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products/index', ['products' => Product::getAllProducts()]);
+        return view('products/index', ['products' => Product::all()]);
     }
 
     /**
@@ -28,7 +28,10 @@ class ProductController extends Controller
      */
     public function search($category) 
     {
-        return view('products/search-products', ['products' => Product::getProductsFromTags($category), 'categorie' => $category]);
+        return view('products/search-products', ['products' => Product::with('categories')->whereHas('categories', 
+            function($q) use($category) {
+                $q->where('name', $category);
+            })->get(), 'categorie' => $category]);
     }
 
     /**
@@ -39,7 +42,7 @@ class ProductController extends Controller
      */
     public function show(string $name)
     {
-        return view('products/product', ['product' => Product::getProductByName($name)]);
+        return view('products/product', ['product' => Product::where('name', $name)->first() ]);
     }
 
     /**

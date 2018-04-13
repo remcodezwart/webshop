@@ -12,7 +12,7 @@
                             <p>Beschrijving {{ $product->description }}</p>
                             <div class="form-inline form-group">Aantal: <input type="number" data-name="{{$product->name}}" data-price="{{$product->price}}" data-id="{{$product->id}}" class="form-control"> vooraad: {{$product->amount}}, prijs:{{$product->price}} euro per stuk</div><button data-id="{{$product->id}}" class="btn btn-primary cart">toevoegen aan winkelmadtje</button>
                         @foreach ($product->categories as $category)
-                            <span class="badge badge-success"><a href="{{ route('search', [$category]) }}">{{ $category }}</a></span>
+                            <span class="badge badge-success"><a href="{{ route('search', [$category->name]) }}">{{ $category->name }}</a></span>
                         @endforeach
                     </div>
                     @endforeach

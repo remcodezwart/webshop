@@ -92,12 +92,7 @@
                         </tr>
                     </thead>
                     <tbody id="orders">
-                        <!--<tr>
-                            <td>nAusc6RcHv</td>
-                            <td>&#8364;4.00</td>
-                            <td>4</td>
-                            <td>&#8364;16.00</td>
-                        </tr>-->
+                        
                     </tbody>
                 </table>
                 <p class="text-center">Totaalprijs &#8364;<span id="total">0</span></p>

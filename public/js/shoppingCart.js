@@ -5,6 +5,8 @@ $( document ).ready(function() {
 	    }
 	});
 
+	getCardContents();
+
 	var totalPrice = $('span[id="total"]');
 	var shoppingCartOverviewElement = $('tbody[id="orders"]');
 
@@ -46,6 +48,28 @@ $( document ).ready(function() {
 		\
     	</tr>"
     }
+
+    function getCardContents()
+    {
+    	var html = "";
+    	var total = 0
+
+    	$.ajax({
+		  url: "/api/cart",
+		  method: "GET",
+		  dataType: "json",
+		  success: function(data){
+		  	data.forEach(function(object){
+		  		html += generateHtml(object.name, object.price, object.amount)
+		  		total += (object.price * object.amount)
+		  	})
+
+		  	shoppingCartOverviewElement.append(html);
+		  	totalPrice.text(total);
+		  }
+		});
+    }
+
 
 
 });

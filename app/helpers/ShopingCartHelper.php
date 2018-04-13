@@ -3,7 +3,7 @@
 namespace App\helpers;
 
 use Validator;
-use App\Models\Product;
+use App\Models\Product as Product;
 
 
 class ShopingCartHelper
@@ -27,7 +27,7 @@ class ShopingCartHelper
 
     	$this->validate($request);
 
-        $this->product = Product::getProductById($this->input['id']);
+        $this->product = Product::find($this->input['id']);
 
         if (!$this->product) {
         	$this->echoJson(array('succes' => false));
@@ -43,7 +43,7 @@ class ShopingCartHelper
 
     public function getCart()
     {
-    	return $this->echoJson($this->session);
+    	return $this->echoJson(Product::find(array_column($this->session, 'id')));
     }
 
     private function modifySession()
@@ -61,7 +61,7 @@ class ShopingCartHelper
 
     private function modifyAmount($value)
     {
-        if ($value->id == $this->product[0]->id) {
+        if ($value->id == $this->product->id) {
     		if ($this->increaseOrDecrease === 'add') {
     			$value->amount += $this->input['amount'];
     		} else if ($increaseOrDecrease === 'decrease') {
@@ -73,12 +73,12 @@ class ShopingCartHelper
 
     private function deleteFromSessionVariable($value)
     {
-    	if ($value->id === $product[0]->id) {
+    	if ($value->id == $product->id) {
     		unset($value);
     	}
     }
 
-    private function echoJson(array $message)
+    private function echoJson($message)
     {
     	header('Content-Type: application/json');
 		echo json_encode($message);

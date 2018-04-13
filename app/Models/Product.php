@@ -4,75 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Category;
+use App\helpers\ShopingCartHelper;
 
 class Product extends Model
 {
+	protected $appends = ['ShopingAmount'];
+    private static $index = -1;
 	/**
-	  *	get all products
-	  *
-	  *	@return Illuminate\Support\Collection|array
-	  */
-	public static function getAllProducts()
-	{
-		return self::getTagsByProduct(DB::table('products')->get());
-	}
-	/**
-	  *	get a product by name
-	  * @param string $name
-	  *
-	  *	@return Illuminate\Support\Collection|array
-	  */
+     * Get all the order amounts from the session
+     *
+     * @return array
+     */
+    public function getShopingAmountAttribute()
+    {
+        $session = session(ShopingCartHelper::CART);
+        if (empty($session)) return ;
+        $amount = array_filter(session(ShopingCartHelper::CART), array($this, 'compareId'));
+        self::$index++;
+        return $amount[self::$index]->amount;
+    }
 
-	public static function getProductById($id)
-	{
-		return self::getTagsByProduct(DB::table('products')->where('id', $id)->get());
-	}
+	public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category', 'product-categories', 'product_id', 'categories_id' );
+    }
 
-
-	public static function getProductByName(string $name)
-	{
-		return self::getTagsByProduct(DB::table('products')->where('name', $name)->get());
-	}
-	/**
-	  *	get all products that have a certain tag
-	  *	@param string $category
-	  *	
-	  *	@return Illuminate\Support\Collection|array
-	  */
-	public static function getProductsFromTags(string $category)
-	{
-		$tagId = Category::getCategoryIdByName($category);
-		if (empty($tagId)) return array();
-
-		$products = DB::table('product-categories')->select('product_id')->where('categories_id', $tagId->id)->get();
-
-		if (empty($products)) return array();
-
-		$productIds = [];
-
-		foreach ($products as $product) {
-			if (isset($product->product_id)) $productIds[] = $product->product_id;
-		}
-		
-		return self::getTagsByProduct(DB::table('products')->whereIn('id', $productIds)->get());
-	}
-
-	/**
-	  *	adds the tags to the product objects
-	  *	@param Illuminate\Support\Collection
-	  *	
-	  *	@return Illuminate\Support\Collection|array
-	  */
-
-	private static function getTagsByProduct($products)
-	{
-		if (empty($products) || !is_object($products) && !is_array($products) ) return array();
-
-		foreach($products as $product) {
-			$product->categories = Category::getCategoryById($product->id); 
-		}
-		
-		return $products;
-	}
+    public function compareId($value)
+    {
+        if ($value->id == $this->id) {
+            return true;
+            exit;
+        }
+    }
 }

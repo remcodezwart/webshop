@@ -12,7 +12,7 @@
                             <p>Naam <a href="{{ route('product', [$product->name]) }}">{{ $product->name }}</a></p>
                             <p>Beschrijving {{ $product->description }}</p>
                         @foreach ($product->categories as $category)
-                            <span class="badge badge-success"><a href="{{ route('search', [$category]) }}">{{ $category }}</a></span>
+                            <span class="badge badge-success"><a href="{{ route('search', [$category->name]) }}">{{ $category->name}}</a></span>
                         @endforeach
                     </div>
                     @endforeach
