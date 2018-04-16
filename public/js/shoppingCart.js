@@ -60,8 +60,8 @@ $( document ).ready(function() {
 		  dataType: "json",
 		  success: function(data){
 		  	data.forEach(function(object){
-		  		html += generateHtml(object.name, object.price, object.amount)
-		  		total += (object.price * object.amount)
+		  		html += generateHtml(object.name, object.price, object.ShopingAmount)
+		  		total += (object.price * object.ShopingAmount)
 		  	})
 
 		  	shoppingCartOverviewElement.append(html);
