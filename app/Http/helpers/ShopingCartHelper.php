@@ -1,6 +1,6 @@
 <?php
 
-namespace App\helpers;
+namespace App\Http\helpers;
 
 use Validator;
 use App\Models\Product as Product;
@@ -59,6 +59,11 @@ class ShopingCartHelper
         ]);
     }
 
+    private function validateForDelete($request)
+    {
+        $this->input = $request->validate(['name' => 'required']);
+    }
+
     private function modifyAmount($value)
     {
         if ($value->id == $this->product->id) {
@@ -69,13 +74,31 @@ class ShopingCartHelper
     		}
     		return true;
     	} 
+        return false;
+    }
+
+    public function deleteFromCart($request)
+    {
+        $this->validateForDelete($request);
+
+        $this->product = Product::where('name', $this->input['name'])->first();
+
+        if (!$this->product) {
+            $this->echoJson(array('succes' => false));
+        }
+
+        $this->session = array_filter($this->session, array($this, 'deleteFromSessionVariable'));
+
+        $this->modifySession();
+        $this->echoJson($this->session);
     }
 
     private function deleteFromSessionVariable($value)
     {
-    	if ($value->id == $product->id) {
-    		unset($value);
+    	if ($value->id != $this->product->id) {
+            return true;
     	}
+        return false;
     }
 
     private function echoJson($message)

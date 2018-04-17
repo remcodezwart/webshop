@@ -76,12 +76,19 @@
 
         @yield('content')
         <div class="container" data-spy="affix">
-            <div class="dropup">
-              <button class="shoppingCartContainer btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="shoppingCartContainer btn btn-default" data-toggle="modal" data-target="#myModal">
                 Winkel wagentje
-                <span class="caret"></span>
-              </button>
-              <ul class="overflow-fix dropdown-menu" aria-labelledby="dropdownMenu2">
+            </button>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Winkel wagentje</h4>
+              </div>
+              <div class="modal-body">
                 <table class="table">
                     <thead>
                         <tr>
@@ -89,17 +96,24 @@
                             <th>prijs</th>
                             <th>aantal</th>
                             <th>totaal</th>
+                            <th>acties</th>
                         </tr>
                     </thead>
                     <tbody id="orders">
                         
                     </tbody>
                 </table>
+              </div>
+              <div class="modal-footer">
                 <p class="text-center">Totaalprijs &#8364;<span id="total">0</span></p>
-                <button class="btn btn-primary btn-lg btn-block">afrekenen</button>
-              </ul>
+                <button class="pull-left btn btn-primary">afrekenen</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Winkel wagentje sluiten</button>   
+              </div>
             </div>
+          </div>
         </div>
+
+
     </div>
 
     <!-- Scripts -->

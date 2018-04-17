@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product as Product;
 use Illuminate\Http\Request;
-use App\helpers\ShopingCartHelper;
+use App\Http\helpers\ShopingCartHelper;
 
 use Validator;
 
@@ -120,5 +120,16 @@ class ProductController extends Controller
     {
         $cart = new ShopingCartHelper();
         $cart->addToCart($request);
+    }
+
+    /**
+     * add items to the shoping cart
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function deleteFromCart(Request $request) 
+    {
+        $cart = new ShopingCartHelper();
+        $cart->deleteFromCart($request);
     }
 }

@@ -5,7 +5,7 @@ $( document ).ready(function() {
 	    }
 	});
 
-	getCardContents();
+	getCartContents();
 
 	var totalPrice = $('span[id="total"]');
 	var shoppingCartOverviewElement = $('tbody[id="orders"]');
@@ -37,6 +37,20 @@ $( document ).ready(function() {
 
     })
 
+    $(document).on("click", ".delete", function(event){
+
+    	var name = $(this).data('name');
+    	
+    	$.ajax({
+		  url: "/api/cart/delete",
+		  method: "POST",
+		  data: {name},
+		  success: function(data){
+		    console.log(data)
+		  }
+		});
+    })
+
     function generateHtml(name, price, amount)
     {
     	return "\
@@ -45,11 +59,15 @@ $( document ).ready(function() {
 			<td>&#8364;"+price+"</td>\
 			<td>"+amount+"</td>\
 			<td>&#8364;"+(price*amount)+"</td>\
+			<td>\
+				<button data-name=\""+name+"\" type=\"button\" class=\"delete btn btn-danger\">Verwijderen</button>	\
+				<button type=\"button\" class=\"btn btn-primary\">Bewerken</button>	\
+			</td>\
 		\
     	</tr>"
     }
 
-    function getCardContents()
+    function getCartContents()
     {
     	var html = "";
     	var total = 0

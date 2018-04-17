@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\helpers\ShopingCartHelper;
+use App\Http\helpers\ShopingCartHelper;
 
 class Product extends Model
 {
@@ -33,7 +33,6 @@ class Product extends Model
     {
         if ($value->id == $this->id) {
             return true;
-            exit;
         }
     }
 }
