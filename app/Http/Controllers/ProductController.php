@@ -132,4 +132,10 @@ class ProductController extends Controller
         $cart = new ShopingCartHelper();
         $cart->deleteFromCart($request);
     }
+
+    public function editFromCart(Request $request)
+    {
+        $cart = new ShopingCartHelper();
+        $cart->editFromCart($request);
+    }
 }

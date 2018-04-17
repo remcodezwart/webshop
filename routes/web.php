@@ -19,6 +19,7 @@ Route::get('/categories', 'CategoryController@index')->name('AllCategories');
 Route::post('/api/cart', 'ProductController@cartAdd')->name('cartAdd');
 Route::get('/api/cart', 'ProductController@getCart')->name('cartGet');
 Route::post('/api/cart/delete',  'ProductController@deleteFromCart')->name('deleteFromCart');
+Route::post('/api/cart/edit', 'ProductController@editFromCart')->name('editFromCart');
 
 Auth::routes();
 

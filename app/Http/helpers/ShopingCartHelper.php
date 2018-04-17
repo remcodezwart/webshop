@@ -14,8 +14,6 @@ class ShopingCartHelper
     private $input;
     private $session;
 
-    private $increaseOrDecrease;
-
     public function __construct()
     {
     	$this->session = (!empty(session(self::CART))) ? session(self::CART) : array();
@@ -23,8 +21,6 @@ class ShopingCartHelper
 
     public function addToCart($request)
     {
-    	$this->increaseOrDecrease = 'add';
-
     	$this->validate($request);
 
         $this->product = Product::find($this->input['id']);
@@ -64,15 +60,38 @@ class ShopingCartHelper
         $this->input = $request->validate(['name' => 'required']);
     }
 
+    public function validateForEdit($request)
+    {
+         $this->input = $request->validate([
+            'name' => 'required',
+            'amount' => 'required|numeric|integer|min:0'
+        ]);
+    }
+
+    public function editFromCart($request)
+    {
+        $this->validateForEdit($request);
+
+        $this->product = Product::where('name', $this->input['name'])->first();
+
+        if (!$this->product) {
+            $this->echoJson(array('succes' => false));
+        }
+
+        if ($this->input['amount'] == 0) {
+            array_filter($this->session, array($this, 'deleteFromSessionVariable'));
+        } else {
+            array_filter($this->session, array($this, 'modifyAmount'));
+        }
+
+        $this->modifySession();
+        $this->echoJson(array('succes' => true));
+    }
+
     private function modifyAmount($value)
     {
         if ($value->id == $this->product->id) {
-    		if ($this->increaseOrDecrease === 'add') {
-    			$value->amount += $this->input['amount'];
-    		} else if ($increaseOrDecrease === 'decrease') {
-    			$value->amount -= $this->input['amount'];
-    		}
-    		return true;
+    		$value->amount = $this->input['amount'];
     	} 
         return false;
     }

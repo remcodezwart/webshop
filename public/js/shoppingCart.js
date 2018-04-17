@@ -58,17 +58,48 @@ $( document ).ready(function() {
 		});
     })
 
+    $(document).on("click", ".edit", function(event){
+
+    	var name = $(this).data('name');
+    	var amount = $('input[data-name_shopping='+name+']').val();
+    	var price = $(this).data('price'); 
+    	var amountToDecrease = $(this).data('total');
+   
+    	$.ajax({
+		  url: "/api/cart/edit",
+		  method: "POST",
+		  data: {name, amount},
+		  success: function(data){
+		    if (data.succes == true) {
+		    	$('tr[data-name=' + name + ']').remove();
+		    	
+		    	var currentTotal = parseInt(totalPrice.text());	
+		    	currentTotal -= amountToDecrease;
+
+		    	if (amount != 0) {
+		    		shoppingCartOverviewElement.append(generateHtml(name, price, amount));
+		    		currentTotal += (amount*price);
+		    	}
+
+		    	totalPrice.text(currentTotal);
+	
+		    }
+		  }
+		});
+
+    })
+
     function generateHtml(name, price, amount)
     {
     	return "\
     	<tr data-name=\""+name+"\">\
 			<td>"+name+"</td>\
 			<td>&#8364;"+price+"</td>\
-			<td>"+amount+"</td>\
+			<td><input data-name_shopping=\""+name+"\" type=\"number\" class=\"width\" value=\""+amount+"\"></td>\
 			<td>&#8364;"+(price*amount)+"</td>\
 			<td>\
 				<button data-price="+(price*amount)+" data-name=\""+name+"\" type=\"button\" class=\"delete btn btn-danger\">Verwijderen</button>	\
-				<button type=\"button\" class=\"btn btn-primary\">Bewerken</button>	\
+				<button data-total=\""+(price*amount)+"\" data-price=\""+price+"\" data-name=\""+name+"\" type=\"button\" class=\"edit btn btn-primary\">Bewerken</button>	\
 			</td>\
 		\
     	</tr>"
