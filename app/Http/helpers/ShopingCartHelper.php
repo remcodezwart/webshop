@@ -90,7 +90,7 @@ class ShopingCartHelper
         $this->session = array_filter($this->session, array($this, 'deleteFromSessionVariable'));
 
         $this->modifySession();
-        $this->echoJson($this->session);
+        $this->echoJson(array('succes' => true));
     }
 
     private function deleteFromSessionVariable($value)

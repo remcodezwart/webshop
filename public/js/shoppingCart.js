@@ -2,7 +2,8 @@ $( document ).ready(function() {
 	$.ajaxSetup({
 	    headers: {
 	        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	    }
+	    },
+	    dataType: "json"
 	});
 
 	getCartContents();
@@ -40,13 +41,19 @@ $( document ).ready(function() {
     $(document).on("click", ".delete", function(event){
 
     	var name = $(this).data('name');
+    	var price = $(this).data('price');
     	
     	$.ajax({
 		  url: "/api/cart/delete",
 		  method: "POST",
 		  data: {name},
 		  success: function(data){
-		    console.log(data)
+		    if (data.succes == true) {
+		    	$('tr[data-name=' + name + ']').remove();
+		    	var currentTotal = parseInt(totalPrice.text());	
+		    	currentTotal -= price;
+		    	totalPrice.text(currentTotal);
+		    }
 		  }
 		});
     })
@@ -54,13 +61,13 @@ $( document ).ready(function() {
     function generateHtml(name, price, amount)
     {
     	return "\
-    	<tr>\
+    	<tr data-name=\""+name+"\">\
 			<td>"+name+"</td>\
 			<td>&#8364;"+price+"</td>\
 			<td>"+amount+"</td>\
 			<td>&#8364;"+(price*amount)+"</td>\
 			<td>\
-				<button data-name=\""+name+"\" type=\"button\" class=\"delete btn btn-danger\">Verwijderen</button>	\
+				<button data-price="+(price*amount)+" data-name=\""+name+"\" type=\"button\" class=\"delete btn btn-danger\">Verwijderen</button>	\
 				<button type=\"button\" class=\"btn btn-primary\">Bewerken</button>	\
 			</td>\
 		\
@@ -75,7 +82,6 @@ $( document ).ready(function() {
     	$.ajax({
 		  url: "/api/cart",
 		  method: "GET",
-		  dataType: "json",
 		  success: function(data){
 		  	data.forEach(function(object){
 		  		html += generateHtml(object.name, object.price, object.ShopingAmount)
