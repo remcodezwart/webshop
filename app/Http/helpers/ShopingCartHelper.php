@@ -92,6 +92,7 @@ class ShopingCartHelper
     {
         if ($value->id == $this->product->id) {
     		$value->amount = $this->input['amount'];
+            return true;
     	} 
         return false;
     }

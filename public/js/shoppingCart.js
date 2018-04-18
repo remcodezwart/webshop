@@ -24,6 +24,10 @@ $( document ).ready(function() {
     	} else {
     		currentTotal += priceForOrder 
     	}
+    	if ( $('tr[data-name=' + name + ']') ) {
+    		$('tr[data-name=' + name + ']').remove();
+    	}
+
     	shoppingCartOverviewElement.append(generateHtml(name, price, amount));
     	totalPrice.text(currentTotal);
 

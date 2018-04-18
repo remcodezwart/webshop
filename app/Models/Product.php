@@ -9,7 +9,7 @@ use App\Http\helpers\ShopingCartHelper;
 class Product extends Model
 {
 	protected $appends = ['ShopingAmount'];
-    private static $index = -1;
+    private static $index = 0;
 	/**
      * Get all the order amounts from the session
      *
@@ -20,8 +20,9 @@ class Product extends Model
         $session = session(ShopingCartHelper::CART);
         if (empty($session)) return ;
         $amount = array_filter(session(ShopingCartHelper::CART), array($this, 'compareId'));
+        $amount = $amount[self::$index]->amount;
         self::$index++;
-        return $amount[self::$index]->amount;
+        return $amount;
     }
 
 	public function categories()
