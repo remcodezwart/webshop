@@ -32,12 +32,22 @@ $( document ).ready(function() {
     	totalPrice.text(currentTotal);
 
      	$.ajax({
-		  url: "/api/cart",
-		  method: "POST",
-		  data: {id, amount},
-		  success: function(data){
-		    console.log(data)
-		  }
+		    url: "/api/cart",
+		    method: "POST",
+		    data: {id, amount},
+		    success: function(data) {
+		      alert('test');
+		    },  
+		    error: function (err) {
+	        	if (err.status == 422) {
+	        		$.each([err.responseJSON.errors], function( index, value ) {
+	        		
+					});
+		            //err.responseJSON.forEach(function(item, index){
+		            //	console.log(item);
+		            //});        
+	        	}
+	    	}
 		});
 
     })
