@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+	$('#error').hide();
 	$.ajaxSetup({
 	    headers: {
 	        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -12,6 +13,10 @@ $( document ).ready(function() {
 	var shoppingCartOverviewElement = $('tbody[id="orders"]');
 
     $('.cart').on('click', function(e){
+
+    	$('#error').hide();
+    	$('#error-list').empty();
+
     	var id = $(this).data('id');
     	var name = $('input[data-id=' + id + ']').data('name');
     	var amount = $('input[data-id=' + id + ']').val();
@@ -36,17 +41,10 @@ $( document ).ready(function() {
 		    method: "POST",
 		    data: {id, amount},
 		    success: function(data) {
-		      alert('test');
+		      
 		    },  
 		    error: function (err) {
-	        	if (err.status == 422) {
-	        		$.each([err.responseJSON.errors], function( index, value ) {
-	        		
-					});
-		            //err.responseJSON.forEach(function(item, index){
-		            //	console.log(item);
-		            //});        
-	        	}
+	       		displayError(err);
 	    	}
 		});
 
@@ -74,6 +72,9 @@ $( document ).ready(function() {
 
     $(document).on("click", ".edit", function(event){
 
+    	$('#error').hide();
+    	$('#error-list').empty();
+
     	var name = $(this).data('name');
     	var amount = $('input[data-name_shopping='+name+']').val();
     	var price = $(this).data('price'); 
@@ -98,7 +99,10 @@ $( document ).ready(function() {
 		    	totalPrice.text(currentTotal);
 	
 		    }
-		  }
+		  },
+		  error: function (err) {
+	       	displayError(err);
+	      }
 		});
 
     })
@@ -137,6 +141,20 @@ $( document ).ready(function() {
 		  	totalPrice.text(total);
 		  }
 		});
+    }
+
+    function displayError(err)
+    {
+    	if (err.status == 422) {
+    		$('#error').hide();
+    		$('#error-list').empty();
+    		$.each([err.responseJSON.errors], function( index, value ) {
+    			for(i = 0; i < value.amount.length; i++) {
+    				$('#error-list').append(value.amount[i]+' <br />');
+    			}
+			});    
+			$('#error').show();
+    	}
     }
 
 

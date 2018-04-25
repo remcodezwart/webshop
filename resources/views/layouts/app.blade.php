@@ -45,6 +45,7 @@
                         <!-- Authentication Links -->
                             <li><a href="{{ route('AllProducts') }}">Producten</a></li>
                             <li><a href="{{ route('AllCategories') }}">Categorieën</a></li>
+                            <li><a href="{{ route('home') }}">Dashboard</a></li>
                         @guest
                             <li><a href="{{ route('login') }}">Inloggen</a></li>
                             <li><a href="{{ route('register') }}">Registeren</a></li>
@@ -73,7 +74,12 @@
                 </div>
             </div>
         </nav>
-
+        <div id="error" class="container">
+            <div id="error-list" class="alert alert-danger" role="alert">
+                <span class="sr-only">Error(s):</span>
+            
+            </div>
+        </div>
         @yield('content')
         <div class="container" data-spy="affix">
             <button type="button" class="shoppingCartContainer btn btn-default" data-toggle="modal" data-target="#myModal">
