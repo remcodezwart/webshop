@@ -25,3 +25,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home', 'HomeController@modifyClient')->name('modifyClient');
+Route::get('/orders', 'OrderController@index')->name('orders');
+Route::post('/orders/create', 'OrderController@placeOrder')->name('placeOrder');

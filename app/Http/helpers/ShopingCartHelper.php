@@ -39,7 +39,17 @@ class ShopingCartHelper
 
     public function getCart()
     {
-    	return $this->echoJson(Product::find(array_column($this->session, 'id')));
+    	return $this->echoJson($this->getCartContens());
+    }
+
+    public function getCartContens()
+    {
+        return Product::find(array_column($this->session, 'id'));
+    }
+
+    public function deleteAllFromCart()
+    {
+        session([self::CART => '']);
     }
 
     private function modifySession()

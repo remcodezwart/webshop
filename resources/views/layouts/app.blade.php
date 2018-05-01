@@ -67,6 +67,17 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                    document.getElementById('temp-form').submit();">
+                                            Bestel
+                                        </a>
+
+                                        <form id="temp-form" action="{{ route('placeOrder') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
                                 </ul>
                             </li>
                         @endguest
@@ -74,6 +85,7 @@
                 </div>
             </div>
         </nav>
+        
         <div id="error" class="container">
             <div id="error-list" class="alert alert-danger" role="alert">
                 <span class="sr-only">Error(s):</span>

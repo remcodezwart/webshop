@@ -53,16 +53,17 @@ class HomeController extends Controller
             $client->user_id = Auth::user()->id;
         }
 
-        $client->name = $input['firstName'];
-        $client->middle_name = $input['middleName'];
-        $client->last_name = $input['lastName'];
-        $client->street = $input['street'];
+        $client->name         = $input['firstName'];
+        $client->middle_name  = $input['middleName'];
+        $client->last_name    = $input['lastName'];
+        $client->street       = $input['street'];
         $client->house_number = $input['housnumber'];
-        $client->post_code = $input['postCode'];
-        $client->gender = $input['gender'];
+        $client->post_code    = $input['postCode'];
+        $client->gender       = $input['gender'];
 
         $client->save();
 
+        return redirect('home');
     }
 
 }
