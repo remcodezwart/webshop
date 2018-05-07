@@ -77,5 +77,23 @@ class OrderController extends Controller
         return redirect('orders');
     }
 
+    /**
+    * Display a listing of the resource.
+    *  @param  int  $id
+    *
+    *  @return \Illuminate\Http\Response
+    */
+    public function order($id)
+    {
+        if (!Client::where('user_id', Auth::user()->id)->first()) {
+            $orders = false;
+        } else {
+            $client = Client::where('user_id', Auth::user()->id)->first();
+            $order = Order::where('client_id', $client->id)->where('id', $id)->first();
+        }
+
+        return view('orders/order', ['order' => $order], ['total' => 0]);
+    }
+
 
 }

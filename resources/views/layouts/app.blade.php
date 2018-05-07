@@ -67,17 +67,6 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                    document.getElementById('temp-form').submit();">
-                                            Bestel
-                                        </a>
-
-                                        <form id="temp-form" action="{{ route('placeOrder') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
                                 </ul>
                             </li>
                         @endguest
@@ -124,7 +113,10 @@
               </div>
               <div class="modal-footer">
                 <p class="text-center">Totaalprijs &#8364;<span id="total">0</span></p>
-                <button class="pull-left btn btn-primary">afrekenen</button>
+                <form class="pull-left" action="{{ route('placeOrder') }}" method="POST">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-primary">bestel</button>
+                </form>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Winkel wagentje sluiten</button>   
               </div>
             </div>
