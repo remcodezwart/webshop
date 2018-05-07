@@ -25,7 +25,7 @@ class ShopingCartHelper
 
         $this->product = Product::find($this->input['id']);
 
-        if (!$this->product) {
+        if (!$this->product || $this->isAsmountLargerThanStock()) {
         	$this->echoJson(array('succes' => false));
         } 
 
@@ -84,7 +84,7 @@ class ShopingCartHelper
 
         $this->product = Product::where('name', $this->input['name'])->first();
 
-        if (!$this->product) {
+        if (!$this->product || $this->isAsmountLargerThanStock()) {
             $this->echoJson(array('succes' => false));
         }
 
@@ -113,7 +113,7 @@ class ShopingCartHelper
 
         $this->product = Product::where('name', $this->input['name'])->first();
 
-        if (!$this->product) {
+        if (!$this->product || $this->isAsmountLargerThanStock()) {
             $this->echoJson(array('succes' => false));
         }
 
@@ -129,6 +129,12 @@ class ShopingCartHelper
             return true;
     	}
         return false;
+    }
+
+    private function isAsmountLargerThanStock()
+    {
+        if ($this->product->amount >= $this->input['amount']) return false;
+        return true;
     }
 
     private function echoJson($message)

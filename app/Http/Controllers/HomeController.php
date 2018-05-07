@@ -42,7 +42,7 @@ class HomeController extends Controller
             'middleName' => 'required|max:255',
             'lastName' => 'required|max:255',
             'street' => 'required',
-            'housnumber' => 'required',
+            'housnumber' => 'required|numeric',
             'postCode' => 'required',
             'gender' => 'required'
         ]);
