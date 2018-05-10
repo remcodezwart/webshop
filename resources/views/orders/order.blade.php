@@ -5,8 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">order {{ $order->id }}</div>
-				@if (!empty($order))
+                @if (!empty($order))
+                <div class="panel-heading">
+                    order {{ $order->id }}</div>
                     <div class="panel-heading">
                         status: {{ $order->status }} <br>
                         datum besteld: {{ $order->date_order }} <br>
