@@ -113,7 +113,7 @@ class ShopingCartHelper
 
         $this->product = Product::where('name', $this->input['name'])->first();
 
-        if (!$this->product || $this->isAsmountLargerThanStock()) {
+        if (!$this->product) {
             $this->echoJson(array('succes' => false));
         }
 
