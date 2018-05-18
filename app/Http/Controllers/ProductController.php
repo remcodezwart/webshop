@@ -108,7 +108,7 @@ class ProductController extends Controller
     public function getCart()
     {
         $cart = new ShopingCartHelper();
-        $cart->getCart();
+        echo json_encode($cart->getCart());
     }
 
     /**
@@ -119,7 +119,7 @@ class ProductController extends Controller
     public function cartAdd(Request $request)
     {
         $cart = new ShopingCartHelper();
-        $cart->addToCart($request);
+        echo json_encode($cart->addToCart($request));
     }
 
     /**
@@ -130,12 +130,12 @@ class ProductController extends Controller
     public function deleteFromCart(Request $request) 
     {
         $cart = new ShopingCartHelper();
-        $cart->deleteFromCart($request);
+        echo json_encode($cart->deleteFromCart($request));
     }
 
     public function editFromCart(Request $request)
     {
         $cart = new ShopingCartHelper();
-        $cart->editFromCart($request);
+        echo json_encode($cart->editFromCart($request));
     }
 }

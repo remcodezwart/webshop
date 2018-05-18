@@ -9,8 +9,7 @@
 				@if (!empty($products))
                     @foreach ($products as $product)
                     <div class="panel-heading">Naam <a href="{{ route('product', [$product->name]) }}">{{ $product->name }}</a> 
-                            <p>Beschrijving {{ $product->description }}</p>
-                            <div class="form-inline form-group">Aantal: <input type="number" min="1" max="{{$product->amount}}" data-name="{{$product->name}}" data-price="{{$product->price}}" data-id="{{$product->id}}" class="form-control"> vooraad: {{$product->amount}}, prijs:{{$product->price}} euro per stuk</div><button data-id="{{$product->id}}" class="btn btn-primary cart">toevoegen aan winkelmadtje</button>
+                        <p>Beschrijving {{ $product->description }}</p>
                         @foreach ($product->categories as $category)
                             <span class="badge badge-success"><a href="{{ route('search', [$category->name]) }}">{{ $category->name }}</a></span>
                         @endforeach

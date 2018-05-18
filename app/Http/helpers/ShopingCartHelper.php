@@ -19,24 +19,6 @@ class ShopingCartHelper
     	$this->session = (!empty(session(self::CART))) ? session(self::CART) : array();
     }
 
-    public function addToCart($request)
-    {
-    	$this->validate($request);
-
-        $this->product = Product::find($this->input['id']);
-
-        if (!$this->product || $this->isAsmountLargerThanStock()) {
-        	$this->echoJson(array('succes' => false));
-        } 
-
-        if (empty($this->session) || array_filter($this->session, array($this, 'modifyAmount')) === []) {
-        	$this->session[] = (object)['id' => $this->input['id'], 'amount' => $this->input['amount']];
-        }
-        
-        $this->modifySession();
-        $this->echoJson(array('succes' => true));
-    }
-
     public function getCart()
     {
     	return $this->echoJson($this->getCartContens());
@@ -52,30 +34,22 @@ class ShopingCartHelper
         session([self::CART => '']);
     }
 
-    private function modifySession()
+    public function addToCart($request)
     {
-    	session([self::CART => $this->session]);
-    }
+        $this->validate($request);
 
-    private function validate($request)
-    {
-    	$this->input = $request->validate([
-            'id' => 'required|numeric|integer|min:1',
-            'amount' => 'required|numeric|integer|min:1',
-        ]);
-    }
+        $this->product = Product::find($this->input['id']);
 
-    private function validateForDelete($request)
-    {
-        $this->input = $request->validate(['name' => 'required']);
-    }
+        if (!$this->product || $this->isAsmountLargerThanStock()) {
+            return $this->echoJson(array('succes' => false));
+        } 
 
-    public function validateForEdit($request)
-    {
-         $this->input = $request->validate([
-            'name' => 'required',
-            'amount' => 'required|numeric|integer|min:0'
-        ]);
+        if (empty($this->session) || array_filter($this->session, array($this, 'modifyAmount')) === []) {
+            $this->session[] = (object)['id' => $this->input['id'], 'amount' => $this->input['amount']];
+        }
+        
+        $this->modifySession();
+        return $this->echoJson(array('succes' => true));
     }
 
     public function editFromCart($request)
@@ -85,7 +59,7 @@ class ShopingCartHelper
         $this->product = Product::where('name', $this->input['name'])->first();
 
         if (!$this->product || $this->isAsmountLargerThanStock()) {
-            $this->echoJson(array('succes' => false));
+            return $this->echoJson(array('succes' => false));
         }
 
         if ($this->input['amount'] == 0) {
@@ -95,16 +69,7 @@ class ShopingCartHelper
         }
 
         $this->modifySession();
-        $this->echoJson(array('succes' => true));
-    }
-
-    private function modifyAmount($value)
-    {
-        if ($value->id == $this->product->id) {
-    		$value->amount = $this->input['amount'];
-            return true;
-    	} 
-        return false;
+        return $this->echoJson(array('succes' => true));
     }
 
     public function deleteFromCart($request)
@@ -114,13 +79,30 @@ class ShopingCartHelper
         $this->product = Product::where('name', $this->input['name'])->first();
 
         if (!$this->product) {
-            $this->echoJson(array('succes' => false));
+            return $this->echoJson(array('succes' => false));
         }
 
         $this->session = array_filter($this->session, array($this, 'deleteFromSessionVariable'));
 
         $this->modifySession();
-        $this->echoJson(array('succes' => true));
+        return $this->echoJson(array('succes' => true));
+    }
+
+    private function validateForEdit($request)
+    {
+        $this->input = $request->validate([
+            'name' => 'required',
+            'amount' => 'required|numeric|integer|min:0'
+        ]);
+    }
+
+    private function modifyAmount($value)
+    {
+        if ($value->id == $this->product->id) {
+            $value->amount = $this->input['amount'];
+            return true;
+        } 
+        return false;
     }
 
     private function deleteFromSessionVariable($value)
@@ -137,10 +119,28 @@ class ShopingCartHelper
         return true;
     }
 
+    private function modifySession()
+    {
+        session([self::CART => $this->session]);
+    }
+
+    private function validate($request)
+    {
+        $this->input = $request->validate([
+            'id' => 'required|numeric|integer|min:1',
+            'amount' => 'required|numeric|integer|min:1',
+        ]);
+    }
+
+    private function validateForDelete($request)
+    {
+        $this->input = $request->validate(['name' => 'required']);
+    }
+
     private function echoJson($message)
     {
     	header('Content-Type: application/json');
-		echo json_encode($message);
+        return $message;
     }
 
 }
