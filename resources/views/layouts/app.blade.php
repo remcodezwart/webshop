@@ -75,13 +75,22 @@
                 </div>
             </div>
         </nav>
+
         
-        <div id="error" class="container">
+        <div style="display:none" id="error" class="container">
             <div id="error-list" class="alert alert-danger" role="alert">
                 <span class="sr-only">Error(s):</span>
             
             </div>
         </div>
+
+        <div style="display:none" id="succes" class="container">
+            <div id="succes-list" class="alert alert-success" role="alert">
+                <span class="sr-only">Succes:</span>
+            
+            </div>
+        </div>
+        @yield('feedback')
         @yield('content')
         <div class="container" data-spy="affix">
             <button type="button" class="shoppingCartContainer btn btn-default" data-toggle="modal" data-target="#myModal">

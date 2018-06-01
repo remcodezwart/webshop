@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Product as Product;
 use Illuminate\Http\Request;
 use App\Http\helpers\ShopingCartHelper;
+use App\Http\helpers\FeedBackHelper;
 
 use Validator;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->feedback = new FeedBackHelper();
+    }
     /**
      * Display a listing of the resource.
      *

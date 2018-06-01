@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-	$('#error').hide();
 	$.ajaxSetup({
 	    headers: {
 	        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -14,20 +13,19 @@ $( document ).ready(function() {
 
     $('.cart').on('click', function(e){
 
-    	$('#error').hide();
-    	$('#error-list').empty();
+    	removeFeedBack();
 
     	var id = $(this).data('id');
     	var name = $('input[data-id=' + id + ']').data('name');
     	var amount = $('input[data-id=' + id + ']').val();
     	var price = $('input[data-id=' + id + ']').data('price');
 
-    	var priceForOrder = price*amount
+    	var priceForOrder = price*amount;
     	var currentTotal = parseInt(totalPrice.text());
     	if (currentTotal === 0) {
     		currentTotal = priceForOrder;
     	} else {
-    		currentTotal += priceForOrder 
+    		currentTotal += priceForOrder; 
     	}
     	if ( $('tr[data-name=' + name + ']') ) {
     		$('tr[data-name=' + name + ']').remove();
@@ -41,16 +39,22 @@ $( document ).ready(function() {
 		    method: "POST",
 		    data: {id, amount},
 		    success: function(data) {
-		      
+		      if (data.succes == false) {
+		      	displayNegativeFeedback(data.message);
+		      } else {
+		      	displayPositiveFeedback(data.message);
+		      }
 		    },  
 		    error: function (err) {
-	       		displayError(err);
+	       		displayNegativeFeedback(err);
 	    	}
 		});
 
     })
 
     $(document).on("click", ".delete", function(event){
+
+    	removeFeedBack();
 
     	var name = $(this).data('name');
     	var price = $(this).data('price');
@@ -65,15 +69,19 @@ $( document ).ready(function() {
 		    	var currentTotal = parseInt(totalPrice.text());	
 		    	currentTotal -= price;
 		    	totalPrice.text(currentTotal);
+
+		      	displayPositiveFeedback(data.message);
 		    }
-		  }
+		  },  
+		  error: function (err) {
+	      	displayNegativeFeedback(err);
+	      }
 		});
     })
 
     $(document).on("click", ".edit", function(event){
 
-    	$('#error').hide();
-    	$('#error-list').empty();
+    	removeFeedBack();
 
     	var name = $(this).data('name');
     	var amount = $('input[data-name_shopping='+name+']').val();
@@ -86,6 +94,8 @@ $( document ).ready(function() {
 		  data: {name, amount},
 		  success: function(data){
 		    if (data.succes == true) {
+		      	displayPositiveFeedback(data.message);
+
 		    	$('tr[data-name=' + name + ']').remove();
 		    	
 		    	var currentTotal = parseInt(totalPrice.text());	
@@ -101,7 +111,7 @@ $( document ).ready(function() {
 		    }
 		  },
 		  error: function (err) {
-	       	displayError(err);
+	       	displayNegativeFeedback(err);
 	      }
 		});
 
@@ -143,20 +153,31 @@ $( document ).ready(function() {
 		});
     }
 
-    function displayError(err)
+    function displayNegativeFeedback(negativeFeedback)
     {
-    	if (err.status == 422) {
-    		$('#error').hide();
-    		$('#error-list').empty();
-    		$.each([err.responseJSON.errors], function( index, value ) {
-    			for(i = 0; i < value.amount.length; i++) {
-    				$('#error-list').append(value.amount[i]+' <br />');
-    			}
-			});    
-			$('#error').show();
-    	}
+		$('#error').hide();
+		$('#error-list').empty();
+		$.each([err.responseJSON.errors], function( index, value ) {
+			for(i = 0; i < value.amount.length; i++) {
+				$('#error-list').append(value.amount[i]+' <br />');
+			}
+		});    
+		$('#error').show();
     }
 
+    function displayPositiveFeedback(positiveFeedback)
+    {
+		$('#succes').hide();
+		$('#succes-list').empty().append(positiveFeedback);
+		$('#succes').show();
+    }
 
+    function removeFeedBack()
+    {
+    	$('#error').hide();
+    	$('#error-list').empty();
 
+    	$('#succes').hide();
+    	$('#succes-list').empty();
+    }
 });

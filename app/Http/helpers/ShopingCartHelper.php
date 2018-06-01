@@ -40,8 +40,8 @@ class ShopingCartHelper
 
         $this->product = Product::find($this->input['id']);
 
-        if (!$this->product || $this->isAsmountLargerThanStock()) {
-            return $this->echoJson(array('succes' => false));
+        if (!$this->product || $this->isAmountLargerThanStock()) {
+            return $this->echoJson(array('succes' => false, 'message' => 'Er is een onbekende fout opgetreden'));
         } 
 
         if (empty($this->session) || array_filter($this->session, array($this, 'modifyAmount')) === []) {
@@ -49,7 +49,7 @@ class ShopingCartHelper
         }
         
         $this->modifySession();
-        return $this->echoJson(array('succes' => true));
+        return $this->echoJson(array('succes' => true, 'message' => 'Product succesvol toegevoegd'));
     }
 
     public function editFromCart($request)
@@ -58,8 +58,8 @@ class ShopingCartHelper
 
         $this->product = Product::where('name', $this->input['name'])->first();
 
-        if (!$this->product || $this->isAsmountLargerThanStock()) {
-            return $this->echoJson(array('succes' => false));
+        if (!$this->product || $this->isAmountLargerThanStock()) {
+            return $this->echoJson(array('succes' => false, 'message' => 'Er is een onbekende fout opgetreden'));
         }
 
         if ($this->input['amount'] == 0) {
@@ -69,7 +69,7 @@ class ShopingCartHelper
         }
 
         $this->modifySession();
-        return $this->echoJson(array('succes' => true));
+        return $this->echoJson(array('succes' => true, 'message' => 'Product succesvol bewerkt'));
     }
 
     public function deleteFromCart($request)
@@ -79,13 +79,13 @@ class ShopingCartHelper
         $this->product = Product::where('name', $this->input['name'])->first();
 
         if (!$this->product) {
-            return $this->echoJson(array('succes' => false));
+            return $this->echoJson(array('succes' => false, 'message' => 'Er is een onbekende fout opgetreden'));
         }
 
         $this->session = array_filter($this->session, array($this, 'deleteFromSessionVariable'));
 
         $this->modifySession();
-        return $this->echoJson(array('succes' => true));
+        return $this->echoJson(array('succes' => true, 'message' => 'Product succesvol verwijderd'));
     }
 
     private function validateForEdit($request)
@@ -113,7 +113,7 @@ class ShopingCartHelper
         return false;
     }
 
-    private function isAsmountLargerThanStock()
+    private function isAmountLargerThanStock()
     {
         if ($this->product->amount >= $this->input['amount']) return false;
         return true;
